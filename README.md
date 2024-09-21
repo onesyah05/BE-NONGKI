@@ -1,66 +1,114 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BE-NONGKI - Backend API dengan Laravel, JWT, dan Redis
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Proyek ini adalah aplikasi backend sederhana yang dibangun menggunakan **Laravel**, dengan **JWT** untuk autentikasi dan **Redis** untuk caching serta rate-limiting. Aplikasi ini menyediakan fitur dasar seperti **autentikasi** (login, signup, logout), serta **CRUD** untuk mengelola profil pengguna.
 
-## About Laravel
+## Fitur Utama
+- **Autentikasi JWT**: Login, Signup, Logout.
+- **CRUD Profil**: Mengelola profil pengguna yang terhubung dengan akun.
+- **Redis**: Digunakan untuk caching dan rate limiting.
+- **SOLID Principles**: Mengikuti prinsip pengembangan yang baik.
+- **Design Patterns**: Clean architecture dan penggunaan pattern sesuai kebutuhan.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requirements
+- PHP >= 7.4
+- Composer
+- MySQL atau MariaDB
+- Redis
+- Node.js (opsional untuk manajemen asset front-end)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Instalasi
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Clone Repository
+Clone repository ini ke dalam direktori lokal Anda:
+```bash
+git clone https://github.com/onesyah05/BE-NONGKI
+cd BE-NONGKI
+```
+### 2. Install Dependensi
+Jalankan perintah berikut untuk menginstal semua dependensi PHP yang diperlukan:
+```bash
+composer install
+```
+### 3. Install Dependensi
+Jalankan perintah berikut untuk menginstal semua dependensi PHP yang diperlukan:
+```bash
+composer install
+```
+### 4. Konfigurasi `.env`
+Salin file `.env.example` menjadi `.env`:
+```bash
+cp .env.example .env
+```
+Kemudian, buka file `.env` dan sesuaikan pengaturan berikut dengan konfigurasi lokal Anda:
+-   Database (`DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`)
+-   Redis (`REDIS_HOST`, `REDIS_PASSWORD`, `REDIS_PORT`)
 
-## Learning Laravel
+Jangan lupa untuk menghasilkan **APP_KEY** dan kunci JWT:
+```bash
+php artisan key:generate
+php artisan jwt:secret
+```
+### 5. Migrasi Database
+Salin file `.env.example` menjadi `.env`:
+```bash
+php artisan migrate
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 5. Jalankan Redis
+Pastikan Redis sudah berjalan. Anda dapat memulai Redis dengan perintah:
+```bash
+redis-server
+```
+### 5. Jalankan Aplikasi
+Pastikan Redis sudah berjalan. Anda dapat memulai Redis dengan perintah:
+```bash
+php artisan serve
+```
+Aplikasi akan berjalan di `http://127.0.0.1:8000`.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Endpoint API
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Autentikasi
 
-## Laravel Sponsors
+-   **POST** `/api/login`: Login dan mendapatkan token JWT.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| field |type  | required|desc|
+|--|--|--|--|
+|name  | string | true |...|
+|email  | string | true |...|
+-   **POST** `/api/signup`: Mendaftarkan pengguna baru.	
 
-### Premium Partners
+| field |type  | required|desc|
+|--|--|--|--|
+|name  | string | true |...|
+|email  | string | true |...|
+|password  | string | true |max:`225`|
+|password_confirmation  | string | true |max:`225`|
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   **POST** `/api/logout`: Logout dan menghapus token dari cache.
 
-## Contributing
+### 2. Profil
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   **GET** `/api/profile`: Melihat profil pengguna yang terautentikasi.
+-   **PUT** `/api/profile`: Memperbarui data profil pengguna.
 
-## Code of Conduct
+| field |type  | required|desc|
+|--|--|--|--|
+|full_name| string | true |...|
+|address| string | true |...|
+|gender| string | true |`Male` atau `Female`|
+|marital_status| string | true |`Single` atau `Married` `default:` **Single** |
+-   **DELETE** `/api/profile`: Menghapus profil pengguna.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Semua endpoint profil dilindungi oleh autentikasi JWT. Anda harus mengirimkan token JWT di header `Authorization` dengan format:
+`Authorization: Bearer <token_jwt>`
 
-## Security Vulnerabilities
+## Tools dan Teknologi
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+-   **Laravel 9**: Framework PHP untuk aplikasi web.
+-   **JWT (JSON Web Token)**: Untuk autentikasi pengguna.
+-   **Redis**: Untuk caching dan rate-limiting.
+-   **MySQL/MariaDB**: Sebagai database utama.
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## ERD
+![GAMBAR ERD Sederhana](https://i.ibb.co.com/6JJ42TM/ERD.png)
